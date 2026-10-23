@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WANG 餐厅打卡助手</title>
+    <title>WANG - Arbeitszeiterfassung</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -20,24 +20,24 @@
         
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
+            background-color: #0b0f19;
+            color: #f1f5f9;
         }
-        .brand-title {
+        .brand-font {
             font-family: 'Space Grotesk', sans-serif;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-4 md:p-8">
+<body class="min-h-screen flex flex-col justify-between p-4 md:p-8 selection:bg-red-500 selection:text-white">
 
-    <!-- 顶部 Header & Logo -->
-    <header class="max-w-xl mx-auto w-full flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+    <!-- 顶部 Header & Logo (极简风格) -->
+    <header class="max-w-xl mx-auto w-full flex items-center justify-between border-b border-slate-800/80 pb-4 mb-6">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center font-extrabold text-white text-xl shadow-lg shadow-red-900/40 brand-title">
+            <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center font-extrabold text-white text-xl shadow-lg shadow-red-900/30 brand-font">
                 W
             </div>
             <div>
-                <div class="brand-title text-lg font-extrabold leading-tight tracking-wide">
+                <div class="brand-font text-base font-extrabold tracking-wide leading-tight">
                     <span class="text-red-500">WANG</span> <span class="text-slate-200">Sushi Grill Wok & Bar</span>
                 </div>
                 <div class="text-[10px] text-slate-400 font-medium">
@@ -45,41 +45,45 @@
                 </div>
             </div>
         </div>
-        <button onclick="toggleBossModal(true)" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-lg transition border border-slate-700">
+        <button onclick="toggleBossModal(true)" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-semibold rounded-lg transition border border-slate-800">
             <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
-            老板后台
+            Dashboard
         </button>
     </header>
 
-    <!-- 主体打卡区域 -->
-    <main class="max-w-xl mx-auto w-full flex-1 flex flex-col items-center justify-center space-y-6">
+    <!-- 主体打卡区域 (极简大方) -->
+    <main class="max-w-xl mx-auto w-full flex-1 flex flex-col items-center justify-center space-y-7">
         
-        <!-- 时钟显示 -->
-        <div class="text-center">
-            <div id="clock-date" class="text-slate-400 text-sm font-semibold tracking-wider">----.--.--</div>
-            <div id="clock-time" class="text-4xl md:text-5xl font-black tracking-tight text-white my-1 font-mono">00:00:00</div>
+        <!-- 德国时间实时显示 -->
+        <div class="text-center space-y-1">
+            <div class="flex items-center justify-center gap-1.5 text-xs font-semibold text-slate-400 tracking-wider uppercase">
+                <i data-lucide="globe" class="w-3.5 h-3.5 text-red-500"></i>
+                <span id="clock-date">----.--.--</span>
+                <span class="text-[10px] text-slate-500 bg-slate-800 px-1.5 py-0.5 rounded">(Germany / Berlin)</span>
+            </div>
+            <div id="clock-time" class="text-5xl md:text-6xl font-black tracking-tight text-white font-mono">00:00:00</div>
         </div>
 
-        <!-- 员工选择 (10名员工) -->
+        <!-- 员工选择 -->
         <div class="w-full">
-            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 text-center">请选择您的名字</label>
+            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5 text-center">Mitarbeiter wählen / 选择员工</div>
             <div id="employee-grid" class="grid grid-cols-2 md:grid-cols-3 gap-2.5">
                 <!-- 由 JavaScript 动态渲染员工按钮 -->
             </div>
         </div>
 
         <!-- 打卡类型切换 -->
-        <div class="w-full grid grid-cols-2 gap-3 p-1 bg-slate-900/80 rounded-xl border border-slate-800">
-            <button id="btn-in" onclick="setAction('clock_in')" class="flex items-center justify-center gap-2 py-3 rounded-lg font-bold text-sm transition bg-emerald-600 text-white shadow-lg shadow-emerald-900/30">
-                <i data-lucide="arrow-right-to-line" class="w-4 h-4"></i> 上班打卡
+        <div class="w-full grid grid-cols-2 gap-2.5 p-1 bg-slate-900/60 rounded-xl border border-slate-800/80">
+            <button id="btn-in" onclick="setAction('clock_in')" class="flex items-center justify-center gap-2 py-3 rounded-lg font-bold text-sm transition bg-emerald-600 text-white shadow-lg shadow-emerald-950/40">
+                <i data-lucide="arrow-right-to-line" class="w-4 h-4"></i> 上班打卡 (Kommen)
             </button>
             <button id="btn-out" onclick="setAction('clock_out')" class="flex items-center justify-center gap-2 py-3 rounded-lg font-bold text-sm transition text-slate-400 hover:text-white">
-                <i data-lucide="arrow-left-from-line" class="w-4 h-4"></i> 下班打卡
+                <i data-lucide="arrow-left-from-line" class="w-4 h-4"></i> 下班打卡 (Gehen)
             </button>
         </div>
 
         <!-- 确认打卡大按钮 -->
-        <button id="btn-submit" onclick="handleClockSubmit()" class="w-full py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-lg rounded-xl shadow-xl shadow-emerald-950/50 flex items-center justify-center gap-2 transition active:scale-[0.99]">
+        <button id="btn-submit" onclick="handleClockSubmit()" class="w-full py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-lg rounded-xl shadow-xl shadow-emerald-950/40 flex items-center justify-center gap-2 transition active:scale-[0.99]">
             <i data-lucide="check-circle-2" class="w-6 h-6"></i> 确认打卡
         </button>
 
@@ -90,53 +94,89 @@
         Designed by Peyser's Studio
     </footer>
 
-    <!-- 老板后台 Modal -->
-    <div id="boss-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-2xl p-6 shadow-2xl space-y-4">
+    <!-- 老板后台 Dashboard Modal -->
+    <div id="boss-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-3xl p-6 shadow-2xl space-y-5">
             
             <!-- PIN 验证界面 -->
-            <div id="boss-auth-view" class="space-y-4 py-4 text-center">
-                <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center mx-auto text-emerald-400">
+            <div id="boss-auth-view" class="space-y-4 py-6 text-center">
+                <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center mx-auto text-emerald-400 border border-slate-700">
                     <i data-lucide="lock" class="w-6 h-6"></i>
                 </div>
-                <h3 class="text-lg font-bold text-white">请输入老板验证密码</h3>
+                <h3 class="text-base font-bold text-white">请输入老板验证密码</h3>
                 <input type="password" id="boss-pin-input" maxlength="4" placeholder="****" class="w-32 mx-auto text-center text-2xl tracking-widest font-mono bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-emerald-500">
                 <div class="flex justify-center gap-3 pt-2">
                     <button onclick="toggleBossModal(false)" class="px-4 py-2 bg-slate-800 text-slate-300 font-semibold text-sm rounded-xl hover:bg-slate-700">取消</button>
-                    <button onclick="verifyBossPin()" class="px-5 py-2 bg-emerald-600 text-white font-semibold text-sm rounded-xl hover:bg-emerald-500">进入后台</button>
+                    <button onclick="verifyBossPin()" class="px-5 py-2 bg-emerald-600 text-white font-semibold text-sm rounded-xl hover:bg-emerald-500">进入 Dashboard</button>
                 </div>
             </div>
 
-            <!-- 数据管理界面 -->
+            <!-- 数据管理界面 (Dashboard) -->
             <div id="boss-dashboard-view" class="hidden space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                    <h3 class="font-bold text-white text-base flex items-center gap-2">
-                        <i data-lucide="database" class="w-5 h-5 text-emerald-400"></i> 月度打卡记录导出
+                    <h3 class="font-bold text-white text-base flex items-center gap-2 brand-font">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5 text-emerald-400"></i> Arbeitszeiterfassung Dashboard
                     </h3>
                     <button onclick="toggleBossModal(false)" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
 
-                <div class="flex gap-3">
-                    <input type="month" id="filter-month" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-slate-200 text-sm focus:outline-none focus:border-emerald-500">
-                    <button onclick="loadBossLogs()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold rounded-xl flex items-center gap-1.5">
-                        <i data-lucide="search" class="w-4 h-4"></i> 查询
+                <!-- Dashboard 概览卡片统计 -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
+                        <div class="text-[11px] text-slate-400 font-medium">当月打卡总人次</div>
+                        <div id="stat-total" class="text-xl font-black text-white mt-1 font-mono">0</div>
+                    </div>
+                    <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
+                        <div class="text-[11px] text-emerald-400 font-medium">上班打卡 (Kommen)</div>
+                        <div id="stat-in" class="text-xl font-black text-emerald-400 mt-1 font-mono">0</div>
+                    </div>
+                    <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
+                        <div class="text-[11px] text-amber-400 font-medium">下班打卡 (Gehen)</div>
+                        <div id="stat-out" class="text-xl font-black text-amber-400 mt-1 font-mono">0</div>
+                    </div>
+                    <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
+                        <div class="text-[11px] text-blue-400 font-medium">打卡员工覆盖数</div>
+                        <div id="stat-emps" class="text-xl font-black text-blue-400 mt-1 font-mono">0</div>
+                    </div>
+                </div>
+
+                <!-- 筛选控制条 (选月份 + 选员工) -->
+                <div class="flex flex-wrap items-center gap-2.5 pt-2">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-xs text-slate-400 font-semibold">月份:</span>
+                        <input type="month" id="filter-month" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-slate-200 text-xs focus:outline-none focus:border-emerald-500">
+                    </div>
+
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-xs text-slate-400 font-semibold">员工:</span>
+                        <select id="filter-employee" class="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-slate-200 text-xs focus:outline-none focus:border-emerald-500">
+                            <option value="ALL">全部员工 (Alle)</option>
+                            <!-- 动态加载员工选项 -->
+                        </select>
+                    </div>
+
+                    <button onclick="loadBossLogs()" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl flex items-center gap-1">
+                        <i data-lucide="search" class="w-3.5 h-3.5"></i> 查询
                     </button>
-                    <button onclick="exportToExcel()" class="ml-auto px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold rounded-xl flex items-center gap-1.5 shadow-lg shadow-emerald-950/50">
-                        <i data-lucide="download" class="w-4 h-4"></i> 导出 Excel
+
+                    <button onclick="exportToExcel()" class="ml-auto px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-lg shadow-emerald-950/40">
+                        <i data-lucide="download" class="w-3.5 h-3.5"></i> 导出德标考勤表 (Excel)
                     </button>
                 </div>
 
-                <div class="max-h-80 overflow-y-auto border border-slate-800 rounded-xl">
+                <!-- 记录列表 -->
+                <div class="max-h-72 overflow-y-auto border border-slate-800/80 rounded-xl">
                     <table class="w-full text-left text-xs text-slate-300">
-                        <thead class="bg-slate-950 text-slate-400 uppercase font-bold sticky top-0">
+                        <thead class="bg-slate-950 text-slate-400 uppercase font-bold sticky top-0 border-b border-slate-800">
                             <tr>
-                                <th class="p-3">姓名</th>
-                                <th class="p-3">类型</th>
-                                <th class="p-3">打卡时间</th>
+                                <th class="p-2.5">员工姓名</th>
+                                <th class="p-2.5">打卡动作</th>
+                                <th class="p-2.5">德国时间 (CET/CEST)</th>
+                                <th class="p-2.5">日期</th>
                             </tr>
                         </thead>
                         <tbody id="boss-log-tbody" class="divide-y divide-slate-800/50">
-                            <!-- 动态加载日志列表 -->
+                            <!-- 动态数据 -->
                         </tbody>
                     </table>
                 </div>
@@ -146,7 +186,7 @@
     </div>
 
     <script>
-        // 配置 Supabase SDK
+        // Supabase SDK 配置
         const SUPABASE_URL = 'https://iwqfqlgxaajdgdvgfilv.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_Y8aTo2cpVSYHd5SI98pKXA_Busb5tcm';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -155,33 +195,40 @@
         let selectedEmployee = employees[0];
         let currentAction = 'clock_in'; // 'clock_in' | 'clock_out'
 
+        // 格式化为德国时间 (Europe/Berlin)
+        function getGermanTimeStrings(dateObj = new Date()) {
+            const timeZone = 'Europe/Berlin';
+            const dateStr = dateObj.toLocaleDateString('zh-CN', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
+            const timeStr = dateObj.toLocaleTimeString('de-DE', { timeZone, hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const monthStr = dateObj.toLocaleDateString('zh-CN', { timeZone, year: 'numeric', month: '2-digit' }).replace(/\//g, '-');
+            return { dateStr, timeStr, monthStr };
+        }
+
         // 初始化页面
         window.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             startClock();
             renderEmployees();
-            
-            // 设置当前月份默认值
-            const today = new Date();
-            document.getElementById('filter-month').value = today.toISOString().slice(0, 7);
+            initFilterOptions();
         });
 
-        // 实时时钟
+        // 德国时间实时时钟
         function startClock() {
             const update = () => {
                 const now = new Date();
-                document.getElementById('clock-date').innerText = now.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'long' });
-                document.getElementById('clock-time').innerText = now.toTimeString().split(' ')[0];
+                const { dateStr, timeStr } = getGermanTimeStrings(now);
+                document.getElementById('clock-date').innerText = dateStr;
+                document.getElementById('clock-time').innerText = timeStr;
             };
             update();
             setInterval(update, 1000);
         }
 
-        // 渲染员工名册
+        // 渲染主页员工按钮
         function renderEmployees() {
             const grid = document.getElementById('employee-grid');
             grid.innerHTML = employees.map(emp => `
-                <button onclick="selectEmployee('${emp}')" class="emp-btn p-3 rounded-xl border text-sm font-bold transition text-center ${emp === selectedEmployee ? 'bg-emerald-950/40 border-emerald-500 text-emerald-400' : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'}">
+                <button onclick="selectEmployee('${emp}')" class="emp-btn p-3 rounded-xl border text-sm font-bold transition text-center ${emp === selectedEmployee ? 'bg-emerald-950/40 border-emerald-500 text-emerald-400' : 'bg-slate-900 border-slate-800/80 text-slate-400 hover:text-slate-200'}">
                     ${emp}
                 </button>
             `).join('');
@@ -192,29 +239,40 @@
             renderEmployees();
         }
 
-        // 切换上班/下班打卡类型
+        // 初始化老板后台的下拉筛选框
+        function initFilterOptions() {
+            const now = new Date();
+            const { monthStr } = getGermanTimeStrings(now);
+            document.getElementById('filter-month').value = monthStr;
+
+            const selectEmp = document.getElementById('filter-employee');
+            selectEmp.innerHTML = `<option value="ALL">全部员工 (Alle)</option>` + 
+                employees.map(emp => `<option value="${emp}">${emp}</option>`).join('');
+        }
+
+        // 切换上班/下班打卡状态
         function setAction(action) {
             currentAction = action;
             const btnIn = document.getElementById('btn-in');
             const btnOut = document.getElementById('btn-out');
 
             if (action === 'clock_in') {
-                btnIn.className = "flex items-center justify-center gap-2 py-3 rounded-lg font-bold text-sm transition bg-emerald-600 text-white shadow-lg shadow-emerald-900/30";
+                btnIn.className = "flex items-center justify-center gap-2 py-3 rounded-lg font-bold text-sm transition bg-emerald-600 text-white shadow-lg shadow-emerald-950/40";
                 btnOut.className = "flex items-center justify-center gap-2 py-3 rounded-lg font-bold text-sm transition text-slate-400 hover:text-white";
             } else {
                 btnIn.className = "flex items-center justify-center gap-2 py-3 rounded-lg font-bold text-sm transition text-slate-400 hover:text-white";
-                btnOut.className = "flex items-center justify-center gap-2 py-3 rounded-lg font-bold text-sm transition bg-amber-600 text-white shadow-lg shadow-amber-900/30";
+                btnOut.className = "flex items-center justify-center gap-2 py-3 rounded-lg font-bold text-sm transition bg-amber-600 text-white shadow-lg shadow-amber-950/40";
             }
         }
 
-        // 提交打卡（带状态拦截校验）
+        // 提交打卡（带防重复打卡逻辑）
         async function handleClockSubmit() {
             const btnSubmit = document.getElementById('btn-submit');
             btnSubmit.disabled = true;
             btnSubmit.innerText = '打卡核验中...';
 
             try {
-                // 1. 使用 Supabase SDK 查询该员工最新一条打卡记录
+                // 1. 查询员工最近一条记录进行状态判断
                 const { data: lastLog, error: queryError } = await supabaseClient
                     .from('clock_logs')
                     .select('action')
@@ -225,7 +283,7 @@
                 if (queryError) throw queryError;
 
                 if (lastLog && lastLog.length > 0) {
-                    const lastAction = lastLog[0].action; // '上班' 或 '下班'
+                    const lastAction = lastLog[0].action;
                     if (currentAction === 'clock_in' && lastAction === '上班') {
                         alert(`⚠️ 员工 [${selectedEmployee}] 当前已处于上班状态，请勿重复【上班打卡】！`);
                         resetSubmitButton();
@@ -237,13 +295,14 @@
                         return;
                     }
                 } else if (currentAction === 'clock_out') {
-                    alert(`⚠️ 员工 [${selectedEmployee}] 无此前上班记录，无法直接进行下班打卡！`);
+                    alert(`⚠️ 员工 [${selectedEmployee}] 无此前上班记录，无法直接下班！`);
                     resetSubmitButton();
                     return;
                 }
 
-                // 2. 状态正常，使用 Supabase SDK 写入
+                // 2. 状态校验正常，获取德国时间并写入 Supabase
                 const now = new Date();
+                const { dateStr, timeStr, monthStr } = getGermanTimeStrings(now);
                 const actionText = currentAction === 'clock_in' ? '上班' : '下班';
 
                 const { error: insertError } = await supabaseClient
@@ -253,25 +312,25 @@
                             employee_name: selectedEmployee,
                             action: actionText,
                             timestamp: now.toISOString(),
-                            date: now.toISOString().slice(0, 10),
-                            month: now.toISOString().slice(0, 7)
+                            date: dateStr,
+                            month: monthStr
                         }
                     ]);
 
                 if (insertError) throw insertError;
 
-                // 3. 打卡成功放彩花特效
+                // 3. 成功特效
                 confetti({
                     particleCount: 80,
                     spread: 60,
                     origin: { y: 0.7 }
                 });
 
-                alert(`🎉 [${selectedEmployee}] ${actionText}打卡成功！\n时间：${now.toLocaleTimeString()}`);
+                alert(`🎉 [${selectedEmployee}] ${actionText}打卡成功！\n德国时间：${timeStr}`);
 
             } catch (err) {
                 console.error(err);
-                alert('提交失败：' + (err.message || '网络问题，请重试'));
+                alert('提交失败：' + (err.message || '网络不稳定，请稍后重试'));
             } finally {
                 resetSubmitButton();
             }
@@ -284,7 +343,7 @@
             lucide.createIcons();
         }
 
-        // 老板后台逻辑
+        // 老板后台弹窗控制
         function toggleBossModal(show) {
             const modal = document.getElementById('boss-modal');
             if (show) {
@@ -312,63 +371,132 @@
 
         let currentLogsCache = [];
 
+        // 加载后台 Dashboard 记录与统计
         async function loadBossLogs() {
             const month = document.getElementById('filter-month').value;
+            const empFilter = document.getElementById('filter-employee').value;
             const tbody = document.getElementById('boss-log-tbody');
-            tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-500">加载中...</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">数据加载中...</td></tr>`;
 
             try {
-                const { data, error } = await supabaseClient
+                let query = supabaseClient
                     .from('clock_logs')
                     .select('*')
                     .eq('month', month)
                     .order('timestamp', { ascending: false });
 
+                if (empFilter !== 'ALL') {
+                    query = query.eq('employee_name', empFilter);
+                }
+
+                const { data, error } = await query;
                 if (error) throw error;
+
                 currentLogsCache = data || [];
 
+                // 计算 Dashboard 统计卡片指标
+                const totalCount = currentLogsCache.length;
+                const inCount = currentLogsCache.filter(l => l.action === '上班').length;
+                const outCount = currentLogsCache.filter(l => l.action === '下班').length;
+                const uniqueEmps = new Set(currentLogsCache.map(l => l.employee_name)).size;
+
+                document.getElementById('stat-total').innerText = totalCount;
+                document.getElementById('stat-in').innerText = inCount;
+                document.getElementById('stat-out').innerText = outCount;
+                document.getElementById('stat-emps').innerText = uniqueEmps;
+
                 if (currentLogsCache.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-500">本月暂无打卡记录</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">该条件暂无打卡记录</td></tr>`;
                     return;
                 }
 
-                tbody.innerHTML = currentLogsCache.map(log => `
-                    <tr class="hover:bg-slate-800/50">
-                        <td class="p-3 font-semibold text-slate-200">${log.employee_name}</td>
-                        <td class="p-3">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${log.action === '上班' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-amber-950 text-amber-400 border border-amber-800'}">
-                                ${log.action}
-                            </span>
-                        </td>
-                        <td class="p-3 text-slate-400 font-mono">${new Date(log.timestamp).toLocaleString('zh-CN')}</td>
-                    </tr>
-                `).join('');
+                tbody.innerHTML = currentLogsCache.map(log => {
+                    const deTime = new Date(log.timestamp).toLocaleTimeString('de-DE', { timeZone: 'Europe/Berlin', hour12: false });
+                    return `
+                        <tr class="hover:bg-slate-800/40 border-b border-slate-800/40">
+                            <td class="p-2.5 font-semibold text-slate-200">${log.employee_name}</td>
+                            <td class="p-2.5">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${log.action === '上班' ? 'bg-emerald-950/80 text-emerald-400 border border-emerald-800' : 'bg-amber-950/80 text-amber-400 border border-amber-800'}">
+                                    ${log.action}
+                                </span>
+                            </td>
+                            <td class="p-2.5 text-slate-300 font-mono">${deTime}</td>
+                            <td class="p-2.5 text-slate-400 font-mono">${log.date}</td>
+                        </tr>
+                    `;
+                }).join('');
 
             } catch (err) {
                 console.error(err);
-                tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-red-400">加载失败</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-red-400">数据读取失败</td></tr>`;
             }
         }
 
+        // 导出对齐德标 PDF 模板的 Excel 表格
         function exportToExcel() {
             if (currentLogsCache.length === 0) {
-                alert('当前无数据可导出！');
+                alert('当前筛选条件下无数据可导出！');
                 return;
             }
 
-            const exportData = currentLogsCache.map(log => ({
-                "员工姓名": log.employee_name,
-                "打卡类型": log.action,
-                "打卡日期": log.date,
-                "打卡具体时间": new Date(log.timestamp).toLocaleString('zh-CN')
-            }));
-
-            const worksheet = XLSX.utils.json_to_sheet(exportData);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "打卡记录");
-
             const month = document.getElementById('filter-month').value;
-            XLSX.writeFile(workbook, `WANG餐厅打卡记录_${month}.xlsx`);
+            const selectedEmp = document.getElementById('filter-employee').value;
+
+            // 1 - 31 日数据预填充结构
+            const daysMap = {};
+            for (let day = 1; day <= 31; day++) {
+                daysMap[day] = {
+                    mittagVon: '', mittagBis: '',
+                    abendVon: '', abendBis: '',
+                    signMa: '', signChef: ''
+                };
+            }
+
+            // 按日期填充记录
+            currentLogsCache.forEach(log => {
+                const dayNum = parseInt(log.date.split('-')[2], 10);
+                if (dayNum >= 1 && dayNum <= 31) {
+                    const timeStr = new Date(log.timestamp).toLocaleTimeString('de-DE', { timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit', hour12: false });
+                    
+                    // 根据时间简单归类 Mittag / Abend
+                    const hour = parseInt(timeStr.split(':')[0], 10);
+                    if (hour < 16) {
+                        if (log.action === '上班' && !daysMap[dayNum].mittagVon) daysMap[dayNum].mittagVon = timeStr;
+                        if (log.action === '下班') daysMap[dayNum].mittagBis = timeStr;
+                    } else {
+                        if (log.action === '上班' && !daysMap[dayNum].abendVon) daysMap[dayNum].abendVon = timeStr;
+                        if (log.action === '下班') daysMap[dayNum].abendBis = timeStr;
+                    }
+                }
+            });
+
+            // 构建匹配 PDF 样式的表头与数据行
+            const excelRows = [
+                ["WANG Sushi Grill Wok & Bar - Arbeitszeiterfassung"],
+                [`Mitarbeiter Name: ${selectedEmp === 'ALL' ? 'Alle Mitarbeiter' : selectedEmp}`, "", "", `Monat / Jahr: ${month}`],
+                [],
+                ["Nr.", "Datum", "Mittag VON", "Mittag BIS", "Abend VON", "Abend BIS", "Unterschrift MA", "Unterschrift Chef"]
+            ];
+
+            for (let day = 1; day <= 31; day++) {
+                const row = daysMap[day];
+                excelRows.push([
+                    day,
+                    `${month}-${String(day).padStart(2, '0')}`,
+                    row.mittagVon,
+                    row.mittagBis,
+                    row.abendVon,
+                    row.abendBis,
+                    row.signMa,
+                    row.signChef
+                ]);
+            }
+
+            const worksheet = XLSX.utils.aoa_to_sheet(excelRows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Arbeitszeiterfassung");
+
+            XLSX.writeFile(workbook, `WANG_Arbeitszeiterfassung_${selectedEmp}_${month}.xlsx`);
         }
     </script>
 </body>
